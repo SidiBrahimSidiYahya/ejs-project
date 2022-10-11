@@ -14,10 +14,41 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
+const posts = [];
 
 
+app.get('/',function(req,res){
+  let page = 'Home';
+  res.render('home',{
+    page:page,
+    content:homeStartingContent,
+    posts:posts
+  });
+});
+
+app.get('/about',function(req,res){
+  let page = 'About';
+  res.render('home',{page:page,content:aboutContent});
+});
+
+app.get('/contact',function(req,res){
+  let page = 'Contact';
+  res.render('home',{page:page,content:contactContent});
+});
+app.get('/compose',function(req,res){
+  res.render('compose');
+});
 
 
+app.post('/compose',function(req,res){
+  var post = {
+    title:req.body.postTitle,
+    content:req.body.postBody,
+  }
+  posts.push(post);
+  res.redirect('/');
+  
+})
 
 
 
@@ -28,5 +59,4 @@ app.use(express.static("public"));
 
 
 app.listen(3000, function() {
-  console.log("Server started on port 3000");
 });
